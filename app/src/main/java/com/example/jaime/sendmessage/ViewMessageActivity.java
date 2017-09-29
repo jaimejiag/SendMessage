@@ -4,8 +4,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.jaime.sendmessage.pojo.Mensaje;
+
+import static com.example.jaime.sendmessage.SendMessageActivity.DATA_KEY;
 import static com.example.jaime.sendmessage.SendMessageActivity.MESSAGE_KEY;
-import static com.example.jaime.sendmessage.SendMessageActivity.USER_KEY;
 
 /**
  * Clase que recibe datos de otra Activity y lo muestra por pantalla.
@@ -28,9 +30,10 @@ public class ViewMessageActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        String user = getIntent().getStringExtra(USER_KEY);
+        Bundle bundle = getIntent().getBundleExtra(DATA_KEY);
+        Mensaje mensaje = bundle.getParcelable(MESSAGE_KEY);
 
-        txvViewUser.setText("El ususario " + user + " a escrito el siguiente mensaje:");
-        txvViewMessage.setText(getIntent().getStringExtra(MESSAGE_KEY));
+        txvViewUser.setText("El ususario " + mensaje.getUser() + " a escrito el siguiente mensaje:");
+        txvViewMessage.setText(mensaje.getMessage());
     }
 }

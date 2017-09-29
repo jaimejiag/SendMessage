@@ -1,6 +1,7 @@
 package com.example.jaime.sendmessage;
 
 import android.content.Intent;
+import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,11 +12,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.jaime.sendmessage.pojo.Mensaje;
+
 /**
  * Clase que envía datos a otra Activity.
  */
 public class SendMessageActivity extends AppCompatActivity implements View.OnClickListener {
-    public static final String USER_KEY = "userkey";
+    public static final String DATA_KEY = "datakey";
     public static final String MESSAGE_KEY = "messagekey";
 
     private EditText edtUser;
@@ -57,8 +60,11 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
 
         if (dataOk) {
             Intent intent = new Intent(this, ViewMessageActivity.class);
-            intent.putExtra(USER_KEY, edtUser.getText().toString());
-            intent.putExtra(MESSAGE_KEY, edtMessage.getText().toString());
+            Bundle bundle = new Bundle();
+            Mensaje mensaje = new Mensaje(edtUser.getText().toString(), edtMessage.getText().toString());
+
+            bundle.putParcelable(MESSAGE_KEY, mensaje);
+            intent.putExtra(DATA_KEY, bundle);
             startActivity(intent);
         } else
             Snackbar.make(layout, "Hay datos sin añadir", Snackbar.LENGTH_SHORT).show();
