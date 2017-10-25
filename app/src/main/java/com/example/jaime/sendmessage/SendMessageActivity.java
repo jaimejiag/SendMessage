@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,9 +16,16 @@ import android.widget.EditText;
 import com.example.jaime.sendmessage.pojo.Mensaje;
 
 /**
- * Clase que envía datos a otra Activity.
+ * Esta clase envia un mensaje a otra Activity
+ * @author Jaime Jiménez Agudo
+ * Conceptos aprendidos:
+ * <ul>
+ *     <li>Concepto Context</li>
+ *     <li>Concepto de @see android.os.Bundle</li>
+ *     <li>Paso de mensajes entre dos activities mediante @see android.content.Intent</li>
+ * </ul>
  */
-public class SendMessageActivity extends AppCompatActivity implements View.OnClickListener {
+public class SendMessageActivity extends AppCompatActivity {
     public static final String DATA_KEY = "datakey";
     public static final String MESSAGE_KEY = "messagekey";
 
@@ -37,7 +45,23 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
         layout = (ConstraintLayout) findViewById(R.id.layout_sendMessage);
 
         btnOk = (Button) findViewById(R.id.btn_ok);
-        btnOk.setOnClickListener(this);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean dataOk = checkData();
+
+                if (dataOk) {
+                    Intent intent = new Intent(SendMessageActivity.this, ViewMessageActivity.class);
+                    Bundle bundle = new Bundle();
+                    Mensaje mensaje = new Mensaje(edtUser.getText().toString(), edtMessage.getText().toString());
+
+                    bundle.putParcelable(MESSAGE_KEY, mensaje);
+                    intent.putExtra(DATA_KEY, bundle);
+                    startActivity(intent);
+                } else
+                    Snackbar.make(layout, "Hay datos sin añadir", Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -55,18 +79,34 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
 
 
     @Override
-    public void onClick(View view) {
-        boolean dataOk = checkData();
+    protected void onStart() {
+        super.onStart();
+        Log.d("send","OnStart()");
 
-        if (dataOk) {
-            Intent intent = new Intent(this, ViewMessageActivity.class);
-            Bundle bundle = new Bundle();
-            Mensaje mensaje = new Mensaje(edtUser.getText().toString(), edtMessage.getText().toString());
+    }
 
-            bundle.putParcelable(MESSAGE_KEY, mensaje);
-            intent.putExtra(DATA_KEY, bundle);
-            startActivity(intent);
-        } else
-            Snackbar.make(layout, "Hay datos sin añadir", Snackbar.LENGTH_SHORT).show();
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("send","OnResume()");
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("send","OnPause()");
+
+    }
+
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("send","OnStop()");
+
     }
 }

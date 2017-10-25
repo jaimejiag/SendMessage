@@ -10,7 +10,9 @@ import static com.example.jaime.sendmessage.SendMessageActivity.DATA_KEY;
 import static com.example.jaime.sendmessage.SendMessageActivity.MESSAGE_KEY;
 
 /**
- * Clase que recibe datos de otra Activity y lo muestra por pantalla.
+ * Esta clase recibe un mensaje de otra Activity
+ * @author Jaime Jiménez Agudo
+ *
  */
 public class ViewMessageActivity extends AppCompatActivity {
     private TextView txvViewUser;
